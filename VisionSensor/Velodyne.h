@@ -17,23 +17,18 @@ struct OBSTACLE_DATA
     float y;
     float r;
 };
+
 using namespace std;
 extern vector<OBSTACLE_DATA> obstacle;
 
-
-
 namespace VelodyneSensor
 {
-
-
 struct VISION_DATA
 {
     unsigned long long timeStamp;
     float gridMap[400][400];
     int obstacleMap[400][400];
 };
-
-
 
 class VELODYNE
 {
@@ -51,9 +46,6 @@ private:
    class VELODYNE_STRUCT;
    std::auto_ptr<VELODYNE_STRUCT> mVelodyneStruct;
 };
-
 }
-
-
 
 #endif // VELODYNE_H

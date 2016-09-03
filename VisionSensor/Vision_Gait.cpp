@@ -6,6 +6,23 @@
 
 using namespace std;
 
+
+
+int RobotVisionWalkForTreePass(Robots::RobotTypeIII &robot, const VISION_TREEPASS_PARAM &param)
+{
+    Robots::Gait::WalkParam wk_param;
+
+    wk_param.alpha = param.alpha;
+    wk_param.d = param.stepDis;
+    wk_param.beta = param.beta;
+    wk_param.h = 0.05;
+    wk_param.n = param.stepNumber;
+    wk_param.count = param.count;
+    wk_param.totalCount = param.totalCount;
+
+    return Robots::Gait::walkGait(robot, wk_param);
+}
+
 int RobotVisionWalk(Robots::RobotTypeIII &robot, const VISION_WALK_PARAM &param)
 {
     Robots::Gait::WalkParam wk_param;

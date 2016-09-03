@@ -15,7 +15,7 @@ pcl::PassThrough<PointXYZ> pass;
 
 void GenPointCoud(const CloudConstPtr &rawCloud, CloudPtr &adjCloud)
 {
-    cout<<"Poin: "<<rawCloud->points.front().x<<" "<<rawCloud->points.front().y<<" "<< rawCloud->points.front().z<<endl;
+    cout<<"Point: "<<rawCloud->points.front().x<<" "<<rawCloud->points.front().y<<" "<< rawCloud->points.front().z<<endl;
 
     Eigen::Matrix4f matrixSTS;
     matrixSTS << -1, 0, 0, 0,
@@ -127,7 +127,6 @@ void VELODYNE::SavePcd()
 
 int VELODYNE::Update(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax,float r,float d)
 {
-
     vector<CloudPtr> obstacleCloud;
     obstacle.clear();
     isFound[2]={0};

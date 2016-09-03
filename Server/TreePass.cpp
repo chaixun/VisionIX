@@ -30,7 +30,6 @@ bool TreePassWrapper::isAnalyzed=0;
 char TreePassWrapper::treeNumber=0;
 int  TreePassWrapper::isFind=1;
 
-VelodyneSensor::VELODYNE TreePassWrapper::velodyne1;
 aris::control::Pipe<int> TreePassWrapper::treePassPipe(true);
 
 atomic_bool TreePassWrapper::isSending(false);
@@ -38,7 +37,7 @@ atomic_bool TreePassWrapper::isStop(false);
 
 std::thread TreePassWrapper::treePassThread;
 
-VISION_WALK_PARAM TreePassWrapper::visionWalkParam;
+VISION_TREEPASS_PARAM TreePassWrapper::visionTreePassParam;
 
 void TreePassWrapper::generatePoint(char orentation)
 {
@@ -108,16 +107,15 @@ void TreePassWrapper::generateParam(double x0, double y0, double x1, double y1, 
 
     std::cout<<"x0: "<<x0<<"  y0: "<<y0<<"  x1: "<<x1<<" y1: "<<y1<<" alpha: "<<alpha/PI*180 <<"  dis: "<<stepDis<<std::endl;
 
-    visionWalkParam.alpha=alpha;
-    visionWalkParam.stepDis=stepDis;
-    visionWalkParam.beta=0;
-    visionWalkParam.totalCount=t;
-    visionWalkParam.stepNumber=n;
+    visionTreePassParam.alpha=alpha;
+    visionTreePassParam.stepDis=stepDis;
+    visionTreePassParam.beta=0;
+    visionTreePassParam.totalCount=t;
+    visionTreePassParam.stepNumber=n;
 }
 
 float TreePassWrapper::generateAngle(double x0, double y0, double x1, double y1, int n, int t)
 {
-
     double x=0;
     double y=0;
     double dis=0;
@@ -136,26 +134,21 @@ float TreePassWrapper::generateAngle(double x0, double y0, double x1, double y1,
     beta = alpha/(n-0.5);
     std::cout<<"x0: "<<x0<<"  y0: "<<y0<<"  x1: "<<x1<<" y1: "<<y1<<" alpha: "<<alpha/PI*180 <<"  beta: "<<beta/PI*180<<std::endl;
 
-    visionWalkParam.alpha=0;
-    visionWalkParam.stepDis=0;
-    visionWalkParam.beta=beta;
-    visionWalkParam.totalCount=t;
-    visionWalkParam.stepNumber=n;
+    visionTreePassParam.alpha=0;
+    visionTreePassParam.stepDis=0;
+    visionTreePassParam.beta=beta;
+    visionTreePassParam.totalCount=t;
+    visionTreePassParam.stepNumber=n;
 
     return abs(alpha);
 }
 
-
 void TreePassWrapper::TreePassStart()
 {
-    velodyne1.Start();
-
     treePassThread = std::thread([](){
 
         while(true)
         {
-            cout<<"isStop: "<< int(isStop) <<" phase: " << phase << " m_targetPointX[2]: " << m_targetPointX[2] << " isGo " << int(isGo) <<" isFind "<< isFind<< endl;
-
             int a;
             float beta;
             treePassPipe.recvInNrt(a);
@@ -164,7 +157,7 @@ void TreePassWrapper::TreePassStart()
             switch(phase)
             {
             case 0:
-                if(visionWalkParam.orentation)
+                if(visionTreePassParam.orentation)
                 {
                     isFind=velodyne1.Update((-t_x-t_deltax),(-t_x+t_deltax),(t_d/2-t_y-t_yDis-t_deltay),(t_d/2-t_y-t_yDis+t_deltay),(t_z-t_deltaz),(t_z+t_deltaz),t_r,t_d);
                 }
@@ -173,22 +166,14 @@ void TreePassWrapper::TreePassStart()
                     isFind=velodyne1.Update((t_x-t_deltax),(t_x+t_deltax),(t_d/2-t_y-t_yDis-t_deltay),(t_d/2-t_y-t_yDis+t_deltay),(t_z-t_deltaz),(t_z+t_deltaz),t_r,t_d);
                 }
                 isFind =1 ;
-
-
                 if(0==isFind)
                 {
                     isStop=1;
                     std::cout<<"Not Found!"<<std::endl;
                     break;
                 }
-                generatePoint(visionWalkParam.orentation);
+                generatePoint(visionTreePassParam.orentation);
                 beta=generateAngle(obstacle.at(0).x+t_xDis, obstacle.at(0).y+t_yDis,obstacle.at(1).x+t_xDis,obstacle.at(1).y+t_yDis,1,2000);
-                //if(!isStop)
-//            {
-//                beta=generateAngle(0.5,0.5,0.5,1.5,1,2000);
-
-//            }
-
                 if(beta>0.08)//((beta>0.04)&&(beta<0.08))//2.5'
                 {
                     std::cout<<"pass case0!"<<std::endl;
@@ -202,7 +187,7 @@ void TreePassWrapper::TreePassStart()
                 }
             case 1:
                 std::cout<<"case1!"<<std::endl;
-                if(visionWalkParam.orentation)
+                if(visionTreePassParam.orentation)
                 {
                     isFind=velodyne1.Update((-t_x-t_deltax),(-t_x+t_deltax),(t_d/2-t_y-t_yDis-t_deltay),(t_d/2-t_y-t_yDis+t_deltay),(t_z-t_deltaz),(t_z+t_deltaz),t_r,t_d);
                 }
@@ -211,61 +196,39 @@ void TreePassWrapper::TreePassStart()
                     isFind=velodyne1.Update((t_x-t_deltax),(t_x+t_deltax),(t_d/2-t_y-t_yDis-t_deltay),(t_d/2-t_y-t_yDis+t_deltay),(t_z-t_deltaz),(t_z+t_deltaz),t_r,t_d);
                 }
                 isFind=1;
-
-
                 if(0==isFind)
                 {
                     isStop=1;
                     std::cout<<"Not Found!"<<std::endl;
                     break;
                 }
-
-                generatePoint(visionWalkParam.orentation);
+                generatePoint(visionTreePassParam.orentation);
                 generateParam(0, 0,m_targetPointX[0],m_targetPointY[0],t_n1,t_t1);
-//                if(!isStop)
-//                {
-//                    generateParam(0, 0,0.2,0.5,t_n1,t_t1);
-
-//                }
-
                 isGo=1;
-                if(0==visionWalkParam.orentation)
+                if(0==visionTreePassParam.orentation)
                 {
-                    visionWalkParam.orentation=1;
+                    visionTreePassParam.orentation=1;
                 }
                 else
                 {
-                    visionWalkParam.orentation=0;
+                    visionTreePassParam.orentation=0;
                 }
                 break;
             case 2:
                 std::cout<<"case2!"<<std::endl;
                 generateParam(m_targetPointX[0],m_targetPointY[0],m_targetPointX[1],m_targetPointY[1],t_n2,t_t2);
-
-                //if(!isStop)
-//            {
-//                generateParam(0.2,0.5,2.2,0.5,t_n2,t_t2);
-
-//            }
-
                 isGo=1;
                 treeNumber++;
                 break;
             case 3:
                 std::cout<<"case3!"<<std::endl;
-
-//                //if(!isStop)
-//            {
                 generateParam(0,0,0,1.5,4,2000);
-
-//            }
                 isGo=1;
                 treeNumber++;
                 break;
             default:
                 std::cout<<"phase error!"<<std::endl;
                 break;
-
             }
         }
     });
@@ -278,14 +241,14 @@ auto TreePassWrapper::TreePassParse(const std::string &cmd, const std::map<std::
     {
         if (i.first == "orentation")
         {
-            visionWalkParam.orentation = std::stoi(i.second);
+            visionTreePassParam.orentation = std::stoi(i.second);
         }
     }
     phase=0;
     treeNumber=0;
     isGo=0;
     isSending = false;
-    visionWalkParam.count = 0;
+    visionTreePassParam.count = 0;
     msg_out.copyStruct(param);
 }
 
@@ -299,39 +262,17 @@ auto TreePassWrapper::TreePaseWalk(aris::dynamic::Model &model, const aris::dyna
     auto &robot = static_cast<Robots::RobotTypeIII &>(model);
     static bool isFirstTime = true;
     int remainCount=0;
-    static double pee[18] = {0};
-    static double peb[6] = {0};
-
-    static aris::dynamic::FloatMarker beginMak{robot.ground()};
 
     if(isStop)
     {
-
-//        Robots::recoverGait(robot, )
-
-//        double origin[6] = {0};
-//        beginMak.setPrtPm(*robot.body().pm());
-//        beginMak.update();
-//        robot.GetPee(pee, beginMak);
-//        robot.GetPeb(peb, beginMak);
-
-//        robot.SetPeb(peb);
-//        robot.SetPee(pee);
-
         isStop = false;
         phase=0;
         m_targetPointX[2]={0};
         m_targetPointY[2]={0};
         isGo = 0;
         treeNumber=0;
-        visionWalkParam.count = 0;
+        visionTreePassParam.count = 0;
         isFind=1;
-
-        rt_printf("aaa\n");
-        cout<<pee[12]<<" "<<peb[2]<<endl;
-
-        cout<<"isStop: "<< int(isStop) <<" phase: " << phase << " m_targetPointX[2]: " << m_targetPointX[2] << " isGo " << int(isGo) <<" isFind "<< isFind<< endl;
-
         return 0;
     }
 
@@ -339,13 +280,13 @@ auto TreePassWrapper::TreePaseWalk(aris::dynamic::Model &model, const aris::dyna
     {
         if(isFirstTime)
         {
-            visionWalkParam.count = 0;
+            visionTreePassParam.count = 0;
             isFirstTime = false;
             std::cout<<"First Time"<<std::endl;
         }
 
-        remainCount = RobotVisionWalk(robot, visionWalkParam);
-        visionWalkParam.count++;
+        remainCount = RobotVisionWalkForTreePass(robot, visionTreePassParam);
+        visionTreePassParam.count++;
         if(0 == remainCount)
         {
             std::cout<<"Finished this step!"<<std::endl;
@@ -354,7 +295,6 @@ auto TreePassWrapper::TreePaseWalk(aris::dynamic::Model &model, const aris::dyna
             {
                 treeNumber=10;
             }
-
 
             if(treeNumber<9)
             {
@@ -380,12 +320,10 @@ auto TreePassWrapper::TreePaseWalk(aris::dynamic::Model &model, const aris::dyna
             std::cout<<"continue!!!"<<std::endl;
             return -1;
         }
-        // rt_printf("bbb\n");
         return -1;
     }
     else
     {
-        rt_printf("ccc\n");
         if(isSending)
         {
             return -1;
@@ -396,10 +334,7 @@ auto TreePassWrapper::TreePaseWalk(aris::dynamic::Model &model, const aris::dyna
             std::cout<<"Send!!!"<<std::endl;
             isSending = true;
             return -1;
-        }    }
-
+        }
+    }
 }
-
-
-
 }

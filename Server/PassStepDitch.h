@@ -39,5 +39,4 @@ private:
 extern PassStepDitchWrapper adjustWrapper;
 }
 
-
 #endif // PASSSTEPDITCH_H

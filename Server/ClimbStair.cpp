@@ -63,29 +63,6 @@ void parseMoveWithupstairs(const std::string &cmd, const std::map<std::string, s
     std::cout<<"finished parse"<<std::endl;
 }
 
-void change(double *oldPee, double *newPee)
-{
-    newPee[0] = oldPee[15];
-    newPee[1] = oldPee[16];
-    newPee[2] = oldPee[17];
-    newPee[3] = oldPee[12];
-    newPee[4] = oldPee[13];
-    newPee[5] = oldPee[14];
-    newPee[6] = oldPee[9];
-    newPee[7] = oldPee[10];
-    newPee[8] = oldPee[11];
-    newPee[9] = oldPee[6];
-    newPee[10] = oldPee[7];
-    newPee[11] = oldPee[8];
-    newPee[12] = oldPee[3];
-    newPee[13] = oldPee[4];
-    newPee[14] = oldPee[5];
-    newPee[15] = oldPee[0];
-    newPee[16] = oldPee[1];
-    newPee[17] = oldPee[2];
-}
-
-
 void parseMoveWithdownstairs(const std::string &cmd, const std::map<std::string, std::string> &params, aris::core::Msg &msg)
 {
     Movedownstairs param;// You set param in the shape of Moveupstairs

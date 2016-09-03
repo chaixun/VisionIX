@@ -2,18 +2,19 @@
 #define TREEPASS_H
 
 #include <thread>
-#include "Velodyne.h"
-#include "aris.h"
-#include "atomic"
-#include "Basic_Gait.h"
-#include <Robot_Base.h>
-#include <Robot_Type_III.h>
 #include <iomanip>
 #include <bitset>
 #include <map>
-#include "rtdk.h"
-#include <Vision_Gait0.h>
-#include <functional>
+#include <atomic>
+#include <rtdk.h>
+
+#include <aris.h>
+#include <Basic_Gait.h>
+#include <Robot_Type_III.h>
+#include "Velodyne.h"
+#include "Vision_Gait.h"
+#include "VisionSensor.h"
+
 
 using namespace std;
 
@@ -24,8 +25,6 @@ class TreePassWrapper
 {
 
 public:
-    static VelodyneSensor::VELODYNE velodyne1;
-
     static aris::control::Pipe<int> treePassPipe;
 
     static atomic_bool isSending;
@@ -40,7 +39,7 @@ public:
     static auto StopTreePassParse(const std::string &cmd, const std::map<std::string, std::string> &params, aris::core::Msg &msg_out)->void;
 
 
-   static VISION_WALK_PARAM visionWalkParam;
+   static VISION_TREEPASS_PARAM visionTreePassParam;
 
 private:
     //parameters
@@ -76,7 +75,6 @@ private:
 };
 
 extern TreePassWrapper treePassWrapper;
-
 }
 
 #endif // TREEPASS_H

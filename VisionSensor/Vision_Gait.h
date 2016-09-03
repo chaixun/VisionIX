@@ -3,7 +3,6 @@
 
 #include <Basic_Gait.h>
 
-
 #define N_CALIBRATION 70
 using namespace aris::dynamic;
 
@@ -30,19 +29,29 @@ struct VISION_WALK_PARAM
     double stepdowndata[6] = {0, 0, 0, 0, 0, 0};
 };
 
+struct VISION_TREEPASS_PARAM
+{
+    int count = 0;
+    int totalCount = 2000;
+    int orentation = 0;
+    double alpha=0;
+    double stepDis=0;
+    int stepNumber=6;
+    double beta=0;
+};
+
 struct VISION_CALIBRATION_PARAM final:public aris::server::GaitParamBase
 {
-    //int count=0;
     int gaitLength=2000;// from zero to the targeting posture
-    //int totalCount=N_CALIBRATION*3000;
     int localCount=0;
     int postureNum=N_CALIBRATION;
     int postureCount=0;
-    //double targetPosture[6]={0,0,0,0,0,0};
     double postureLib[6*N_CALIBRATION];
 };
 
 int RobotVisionWalk(Robots::RobotTypeIII &robot, const VISION_WALK_PARAM &param);
+
+int RobotVisionWalkForTreePass(Robots::RobotTypeIII &robot, const VISION_TREEPASS_PARAM &param);
 
 int RobotBody(Robots::RobotTypeIII &robot, int count, float bodymovedata[3]);
 
