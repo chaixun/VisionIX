@@ -3,17 +3,10 @@
 namespace Calibration
 {
 
-double feetPosi[18] =
-{ -0.3,  -0.935, -0.65,
-  -0.45, -0.935,  0,
-  -0.3,  -0.935,  0.65,
-  0.3,  -0.935, -0.65,
-  0.45, -0.935,  0,
-  0.3,   -0.935,  0.65 };
-
 enum CalibrationState
 {
-    None=0,
+    None = 0,
+    BodyUP = 4,
     Go=1,
     Processing=2,
     Back=3,
@@ -124,6 +117,11 @@ auto CalibrationWrapper::visionCalibrate(aris::dynamic::Model &model, const aris
     double currentPeb[6];
     double s;
 
+    static int bodyUpCount = 0;
+    static double beginPee[18]{0};
+    static double beginPeb[6]{0};
+    static double bodyHeight = 0.935;
+
     if(pSP.count==0)
     {
         rt_printf("calibration gait begins\n");
@@ -134,10 +132,44 @@ auto CalibrationWrapper::visionCalibrate(aris::dynamic::Model &model, const aris
     switch(calibrationState)
     {
     case None:
-        calibrationState=Go;
+        calibrationState = BodyUP;
+        break;
+    case BodyUP:
+        if(bodyUpCount == 0)
+        {
+            beginMak.setPrtPm(*robot.body().pm());
+            beginMak.update();
+            robot.GetPee(beginPee, beginMak);
+            robot.GetPeb(beginPeb, beginMak);
+        }
+
+        double Peb[6], Pee[18];
+        std::copy(beginPeb, beginPeb + 6, Peb);
+        std::copy(beginPee, beginPee + 18, Pee);
+
+        double s1;
+        s1 = cos(PI * (bodyUpCount + 1) / 2000);
+
+        Peb[1] = beginPeb[1] + (bodyHeight - beginPeb[1]) * (1 - s1)/2;
+
+        robot.SetPeb(Peb, beginMak);
+        robot.SetWa(0);
+        robot.SetPee(Pee, beginMak);
+
+        bodyUpCount++;
+
+        if(bodyUpCount == 2000)
+        {
+            calibrationState = Go;
+            bodyUpCount = 0;
+            beginMak.setPrtPm(*robot.body().pm());
+            beginMak.update();
+            robot.GetPee(beginPee, beginMak);
+            robot.GetPeb(beginPeb, beginMak);
+        }
         break;
     case Go:
-        if(localCount==0)
+        if(localCount == 0)
         {
             rt_printf("calibration posture %d\n",postureCount);
             memcpy(targetPosture,&pSP.postureLib[6*postureCount],sizeof(targetPosture));
@@ -158,7 +190,7 @@ auto CalibrationWrapper::visionCalibrate(aris::dynamic::Model &model, const aris
 
         robot.SetPeb(bodyPose,beginMak);
         robot.SetWa(0);
-        robot.SetPee(feetPosi, beginMak);
+        robot.SetPee(beginPee, beginMak);
         localCount+=1;
 
         if(pSP.gaitLength-localCount==0)
@@ -198,16 +230,20 @@ auto CalibrationWrapper::visionCalibrate(aris::dynamic::Model &model, const aris
 
         robot.SetPeb(bodyPose1,beginMak);
         robot.SetWa(0);
-        robot.SetPee(feetPosi, beginMak);
+        robot.SetPee(beginPee, beginMak);
         localCount+=1;
 
         if(pSP.gaitLength-localCount==0)
         {
             postureCount+=1;
-            calibrationState=None;
+            calibrationState = Go;
             localCount = 0;
             if(postureCount==pSP.postureNum)
+            {
+                localCount = 0;
+                calibrationState = None;
                 return 0;
+            }
         }
         break;
     default:

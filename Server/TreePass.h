@@ -15,7 +15,6 @@
 #include "Vision_Gait.h"
 #include "VisionSensor.h"
 
-
 using namespace std;
 
 namespace TreePass
@@ -23,7 +22,6 @@ namespace TreePass
 
 class TreePassWrapper
 {
-
 public:
     static aris::control::Pipe<int> treePassPipe;
 
@@ -40,7 +38,6 @@ public:
 
 
    static VISION_TREEPASS_PARAM visionTreePassParam;
-
 private:
     //parameters
     static float t_r;    // radius of obstacle
