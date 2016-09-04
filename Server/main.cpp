@@ -25,9 +25,9 @@ using namespace aris::core;
 
 int main(int argc, char *argv[])
 {
-    kinect2.Start();
+    //kinect2.Start();
 
-    velodyne1.Start();
+    //velodyne1.Start();
 
     PassStepDitch::adjustWrapper.AdjustStart();
 
