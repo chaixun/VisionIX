@@ -59,4 +59,13 @@ int RobotStepUp(Robots::RobotTypeIII &robot, int count, float stepheight);
 
 int RobotStepDown(Robots::RobotTypeIII &robot, int count, float stepdetph);
 
+struct MoveRotateParam final :public aris::server::GaitParamBase
+{
+    double targetBodyPE213[6]{0};
+    std::int32_t totalCount;
+};
+void parseMoveWithRotate(const std::string &cmd, const map<std::string, std::string> &params, aris::core::Msg &msg);
+
+int moveWithRotate(aris::dynamic::Model &model, const aris::dynamic::PlanParamBase &param_in);
+
 #endif // VISION_GAIT0_H

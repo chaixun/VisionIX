@@ -943,7 +943,6 @@ int movedownstairs(aris::dynamic::Model &model, const aris::dynamic::PlanParamBa
         k=0 ;
     }
 
-
     if(param.count==0)
     {
         beginMaker.setPrtPm(*robot.body().pm());

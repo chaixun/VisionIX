@@ -679,6 +679,18 @@
                   <alpha abbreviation="w" type="double" default="5.00"/>
                 </dw_param>
             </dw>
+            <cap/>
+            <mr>
+                 <mr_param type="group">
+                   <u abbreviation="u" type="double" default="0"/>
+                   <v abbreviation="v" type="double" default="0"/>
+                   <w abbreviation="w" type="double" default="0"/>
+                   <roll abbreviation="r" type="double" default="0"/>
+                   <pitch abbreviation="p" type="double" default="0"/>
+                   <yaw abbreviation="y" type="double" default="0"/>
+                   <totalCount abbreviation="t" type="double" default="3000"/>
+                 </mr_param>
+            </mr>
             <twk default="VISION_WALK_PARAM">
                  <VISION_WALK_PARAM type="group">
                  <orentation abbreviation="o" type="int" default="0"/>
