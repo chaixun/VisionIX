@@ -42,7 +42,7 @@ struct VISION_TREEPASS_PARAM
 
 struct VISION_CALIBRATION_PARAM final:public aris::server::GaitParamBase
 {
-    int gaitLength=2000;// from zero to the targeting posture
+    int gaitLength=3000;// from zero to the targeting posture
     int localCount=0;
     int postureNum=N_CALIBRATION;
     int postureCount=0;

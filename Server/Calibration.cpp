@@ -66,7 +66,7 @@ void CalibrationWrapper::CalibrationStart()
             int postureCount;
             calibrationPipe.recvInNrt(postureCount);
 
-            //            kinect2.SavePcd();
+            kinect2.SavePcd();
             cout<<" map recorded"<<endl;
             isTerrainCaliRecorded=true;
         }
@@ -108,7 +108,7 @@ auto CalibrationWrapper::visionCalibrateParse(const std::string &cmd, const std:
 
 auto CalibrationWrapper::captureParse(const string &cmd, const map<string, string> &param, aris::core::Msg &msg) -> void
 {
-    // kinect2.SavePcd();
+    kinect2.SavePcd();
     cout<<"capture map"<<endl;
 }
 
@@ -130,6 +130,9 @@ auto CalibrationWrapper::visionCalibrate(aris::dynamic::Model &model, const aris
 
     static double partio = 1;
     static double bodypartio = 0.8;
+
+    //    static double partio = 0.6;
+    //    static double bodypartio = 1;
 
     if(pSP.count==0)
     {
@@ -211,9 +214,9 @@ auto CalibrationWrapper::visionCalibrate(aris::dynamic::Model &model, const aris
             calibrationState=Processing;
             calibrationPipe.sendToNrt(postureCount);
             localCount = 0;
-            rt_printf("begin capture !\n");
-//            rt_printf("raw: %lf %lf %lf \n", currentPeb[0], currentPeb[1], currentPeb[2]);
-//            rt_printf("target: %lf %lf %lf \n", bodyPose[3], bodyPose[4], bodyPose[5]);
+            robot.GetPeb(beginPeb, beginMak);
+            rt_printf("bodyHeight: %lf\n", beginPeb[1]);
+            rt_printf("capture begin\n");
         }
         break;
     case Processing:
