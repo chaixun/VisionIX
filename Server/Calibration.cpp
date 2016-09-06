@@ -128,11 +128,14 @@ auto CalibrationWrapper::visionCalibrate(aris::dynamic::Model &model, const aris
     static double beginPeb[6]{0};
     static double bodyHeight = 0.95;
 
-    static double partio = 1;
-    static double bodypartio = 0.8;
+   // static double partio = 1;
+   // static double bodypartio = 0.8;
 
-    //    static double partio = 0.6;
-    //    static double bodypartio = 1;
+     static double partio = 0.6;
+        static double bodypartio = 1;
+
+//   static double partio = 0.8;
+//   static double bodypartio = 1;
 
     if(pSP.count==0)
     {
