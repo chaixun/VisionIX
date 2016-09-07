@@ -26,7 +26,7 @@ using namespace aris::core;
 
 int main(int argc, char *argv[])
 {
-    kinect2.Start();
+    //kinect2.Start();
 
     //velodyne1.Start();
 
@@ -84,7 +84,11 @@ int main(int argc, char *argv[])
     rs.addCmd("twk", TreePass::treePassWrapper.TreePassParse, TreePass::treePassWrapper.TreePaseWalk);
     rs.addCmd("swk", TreePass::treePassWrapper.StopTreePassParse, TreePass::treePassWrapper.TreePaseWalk);
 
-    rs.addCmd("ups", ParseUpOnestep, UpOneStepGait);
+//    rs.addCmd("up25", ParseUp25Step, Up25StepGait);
+        rs.addCmd("up25", ParseUp25Step, Up25StepTwoTwoGait);
+    rs.addCmd("up15", ParseUp15Step, Up15StepGait);
+//    rs.addCmd("dw25", ParseDown25Step, Down25StepGait);
+//    rs.addCmd("dw15", ParseDown15Step, Down15StepGait);
 
     rs.open();
 

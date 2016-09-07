@@ -697,13 +697,20 @@
                  </VISION_WALK_PARAM>
             </twk>
             <swk/>
-            <ups default="ups_param">
-                 <ups_param type="group">
-                     <stepHeight abbreviation="sh" type="double" default="0.25"/>
-                     <bodyHeight abbreviation="bh" type="double" default="0.2"/>
-                     <normalHeight abbreviation="nh" type="double" default="0.05"/>
-                 </ups_param>
-            </ups>
+            <up25 default="up25_param">
+                 <up25_param type="group">
+                     <stepHeight abbreviation="s" type="double" default="0.25"/>
+                     <bodyHeight abbreviation="b" type="double" default="0.18"/>
+                     <normalHeight abbreviation="n" type="double" default="0.05"/>
+                 </up25_param>
+            </up25>
+            <up15 default="up15_param">
+                 <up15_param type="group">
+                     <stepHeight abbreviation="s" type="double" default="0.15"/>
+                     <bodyHeight abbreviation="b" type="double" default="0.10"/>
+                     <normalHeight abbreviation="n" type="double" default="0.05"/>
+                 </up15_param>
+            </up15>
         </Commands>
     </Server>
     <Controller>
