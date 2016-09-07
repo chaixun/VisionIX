@@ -20,6 +20,7 @@ using namespace std;
 #include "PassStepDitch.h"
 #include "Calibration.h"
 #include "TreePass.h"
+#include "UpOneSep.h"
 
 using namespace aris::core;
 
@@ -82,6 +83,8 @@ int main(int argc, char *argv[])
 
     rs.addCmd("twk", TreePass::treePassWrapper.TreePassParse, TreePass::treePassWrapper.TreePaseWalk);
     rs.addCmd("swk", TreePass::treePassWrapper.StopTreePassParse, TreePass::treePassWrapper.TreePaseWalk);
+
+    rs.addCmd("ups", ParseUpOnestep, UpOneStepGait);
 
     rs.open();
 

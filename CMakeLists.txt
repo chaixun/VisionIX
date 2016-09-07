@@ -115,7 +115,7 @@ link_directories(${ALL_LINK_DIR})
 
 
 ################################### build server ####################################
-set(SOURCE_FILES main.cpp ClimbStair.cpp PassStepDitch.cpp Calibration.cpp TreePass.cpp)
+set(SOURCE_FILES main.cpp ClimbStair.cpp PassStepDitch.cpp Calibration.cpp TreePass.cpp UpOneStep.cpp)
 PREPEND(FULL_SRC Server ${SOURCE_FILES})
 
 set(VISION_SOURCE_FILES Kinect2.cpp Vision_Gait.cpp Vision_Terrain.cpp VisionSensor.cpp Velodyne.cpp)
