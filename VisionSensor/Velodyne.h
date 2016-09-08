@@ -38,6 +38,7 @@ public:
 
     void Start();
     int Update(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax,float r,float d);
+    void UpdateO();
     void SavePcd();
     void Stop();
     VISION_DATA visData;

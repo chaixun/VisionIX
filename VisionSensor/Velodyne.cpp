@@ -104,12 +104,10 @@ void VELODYNE::Start()
 {
     mVelodyneStruct->Init();
     cout<<"Device Open ! "<<endl;
-    int a;
     for (int i = 0; i < 7; i++)
     {
-        a=Update(-1.0,1.0,0,2.5,-0.78,0.60,0.02,2.5);
+        UpdateO();
     }
-    SavePcd();
     cout<<"Clear !"<<endl;
 }
 
@@ -123,6 +121,25 @@ void VELODYNE::SavePcd()
 {
 
 
+}
+
+void VELODYNE::UpdateO()
+{
+    while(true)
+    {
+        CloudConstPtr rawCloud;
+        if(mVelodyneStruct->cloud_mutex_.try_lock())
+        {
+
+            mVelodyneStruct->cloud_.swap(rawCloud);
+            mVelodyneStruct->cloud_mutex_.unlock();
+        }
+        if(rawCloud)
+        {
+            cout<<"Have got data"<<endl;
+            break;
+        }
+    }
 }
 
 int VELODYNE::Update(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax,float r,float d)
