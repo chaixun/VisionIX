@@ -22,12 +22,12 @@
             <S3jpe type="matrix">{ 0, 0,      0,     0, -PI / 2, 0 }</S3jpe>
             <Sfipe type="matrix">{ 0.14629, -0.00047, 0, 0, 0, 0 }</Sfipe>
             <Sfjpe type="matrix">{ 0,   0, 0, 0, 0, 0 }</Sfjpe>
-            <LFpe type="matrix">{-0.07288 , 0 ,  0.0732,  PI/2,  PI* 5/6,   -PI/2-PI*75/180}</LFpe>
+            <LFpe type="matrix">{-0.067 , 0 ,  0.0732,  PI/2,  PI* 5/6,   -PI/2-PI*75/180}</LFpe>
             <LMpe type="matrix">{-0.12661 , 0 ,  0,       PI/2,  PI* 6/6,   -PI/2-PI*75/180}</LMpe>
-            <LRpe type="matrix">{-0.07288 , 0 ,  -0.0732, PI/2,  PI* 7/6,   -PI/2-PI*75/180}</LRpe>
-            <RFpe type="matrix">{ 0.07288 , 0 ,  0.0732,  PI/2,  PI* 1/6,   -PI/2-PI*75/180}</RFpe>
+            <LRpe type="matrix">{-0.067 , 0 ,  -0.0732, PI/2,  PI* 7/6,   -PI/2-PI*75/180}</LRpe>
+            <RFpe type="matrix">{ 0.067 , 0 ,  0.0732,  PI/2,  PI* 1/6,   -PI/2-PI*75/180}</RFpe>
             <RMpe type="matrix">{ 0.12661 , 0 ,  0,       PI/2,  PI* 0/6,   -PI/2-PI*75/180}</RMpe>
-            <RRpe type="matrix">{ 0.07288 , 0 ,  -0.0732, PI/2,  PI*11/6,   -PI/2-PI*75/180}</RRpe>
+            <RRpe type="matrix">{ 0.067 , 0 ,  -0.0732, PI/2,  PI*11/6,   -PI/2-PI*75/180}</RRpe>
             <ForceSensorMakPe type="matrix">{ 0,0,0,0,0,0 }</ForceSensorMakPe>
             <BF_R1ipe type="matrix">{ 0,    0.135,  0,      PI/2,  PI/2,   -PI/2 }</BF_R1ipe>
             <BF_R1jpe type="matrix">{ 0,    0,      -0.415, PI/2,  PI/2,   -PI/2 }</BF_R1jpe>
@@ -704,6 +704,13 @@
                      <normalHeight abbreviation="n" type="double" default="0.05"/>
                  </up25_param>
             </up25>
+            <dw25 default="dw25_param">
+                 <dw25_param type="group">
+                     <stepHeight abbreviation="s" type="double" default="0.25"/>
+                     <bodyHeight abbreviation="b" type="double" default="0.07"/>
+                     <normalHeight abbreviation="n" type="double" default="0.05"/>
+                 </dw25_param>
+            </dw25>
             <up15 default="up15_param">
                  <up15_param type="group">
                      <stepHeight abbreviation="s" type="double" default="0.15"/>
@@ -822,5 +829,5 @@
     <Sensors>
         <IMU active="false" type="xsens_imu" portLinux="/dev/ttyUSB0" baudRate="921600" sampleRate="400" PeImuGround2BodyGound="{0,0,0,0,-PI/2,PI}" PeImu2Body="{0,0,0,0,PI/2,0}"/>
     </Sensors>
-    <UDP remote_ip="192.168.1.101" remote_port="6661" local_port="6660"/>
+    <UDP remote_ip="192.168.2.102" remote_port="6661" local_port="6660"/>
 </RobotIX>

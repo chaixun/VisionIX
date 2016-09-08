@@ -33,6 +33,8 @@ int main(int argc, char *argv[])
     PassStepDitch::adjustWrapper.AdjustStart();
 
     Calibration::calibrationWrapper.CalibrationStart();
+    
+    TreePass::treePassWrapper.TreePassStart();
 
     std::string xml_address;
 
@@ -87,7 +89,7 @@ int main(int argc, char *argv[])
 //    rs.addCmd("up25", ParseUp25Step, Up25StepGait);
         rs.addCmd("up25", ParseUp25Step, Up25StepTwoTwoGait);
     rs.addCmd("up15", ParseUp15Step, Up15StepGait);
-//    rs.addCmd("dw25", ParseDown25Step, Down25StepGait);
+    rs.addCmd("dw25", ParseDown25Step, Down25StepGait);
 //    rs.addCmd("dw15", ParseDown15Step, Down15StepGait);
 
     rs.open();

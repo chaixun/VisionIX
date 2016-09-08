@@ -87,7 +87,7 @@ int RobotVisionWalkForTreePass(Robots::RobotTypeIII &robot, const VISION_TREEPAS
     wk_param.alpha = param.alpha;
     wk_param.d = -param.stepDis;
     wk_param.beta = param.beta;
-    wk_param.h = 0.05;
+    wk_param.h = 0.075;
     wk_param.n = param.stepNumber;
     wk_param.count = param.count;
     wk_param.totalCount = param.totalCount;
